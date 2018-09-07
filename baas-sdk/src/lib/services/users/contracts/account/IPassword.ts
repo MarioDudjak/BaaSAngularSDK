@@ -1,16 +1,16 @@
 
 export interface ISetPassword {
-  newPassword: string,
-  confirmPassword: string
+  NewPassword: string,
+  ConfirmPassword: string
 };
 
 export interface IChangePassword extends ISetPassword {
-  oldPassword: string,
+  OldPassword: string,
 }
 
 export interface IPasswordMessage {
-  succeeded: boolean,
-  errors: string[]
+  Succeeded: boolean,
+  Errors: string[]
 }
 
 

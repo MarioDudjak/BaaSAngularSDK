@@ -13,42 +13,68 @@ export class UsersService {
     private baasService: BaasService) { }
 
   get account(): IUserAccountService {
+    let http = this.http;
+    let token = localStorage.getItem('access_token');
     return {
       register(data: IRegisterUser): Observable<HttpResponse<IAppUser>> {
-        return this.http.post(UsersEndpoints.register, data, { observe: 'response' });
+        return http.post<IAppUser>(UsersEndpoints.register, data, { observe: 'response' });
       },
       login(data: ILoginUser): Observable<HttpResponse<IAppUser>> {
-        let httpOptions = {
-          observe: 'response',
+        let body = new HttpParams().set('username', data.UserName).append('password', data.Password).append('grant_type', 'password');
+        return http.post(UsersEndpoints.token, body.toString(), {
+          observe: 'body',
+          responseType: 'json',
           headers: new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'application/json'
-          }),
-          params: new HttpParams().set('username', data.userName).append('password', data.password).append('grant_type', 'password')
-        };
-        return this.http.post(UsersEndpoints.token, httpOptions).pipe(switchMap(response => {
-          if (response['_body']['access_token']) {
-            localStorage.setItem('access_token', JSON.stringify(response['_body']['access_token']));
-            let loginHttpOptions = {
+          })
+        }).pipe(switchMap(response => {
+          if (response['access_token']) {
+            localStorage.setItem('access_token', JSON.stringify(response['access_token']));
+            return http.post<IAppUser>(UsersEndpoints.login, data, {
               observe: 'response',
+              responseType: 'json',
               headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
               }),
-            };
-            return this.http.post(UsersEndpoints.login, data, loginHttpOptions);
+            });
           }
         })
         );
       },
       logout(): Observable<HttpResponse<void>> {
-        return null;
+        localStorage.removeItem('access_token');
+        return http.post<void>(UsersEndpoints.logout, '',{
+          observe: 'response',
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer '+ token
+          }),
+         });
       },
       setPassword(data: ISetPassword): Observable<HttpResponse<IPasswordMessage>> {
-        return null;
+        return http.post<IPasswordMessage>(UsersEndpoints.setPassword, data, {
+          responseType: 'json',
+          observe: 'response',
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer '+ token
+          })
+       });
       },
       changePassword(data: IChangePassword): Observable<HttpResponse<IPasswordMessage>> {
-        return null;
+        return http.post<IPasswordMessage>(UsersEndpoints.changePassword, data, {
+          responseType: 'json',
+          observe: 'response',
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer '+ token
+          })
+       });
       }
     };
   }

@@ -1,14 +1,14 @@
 export interface IRole {
-  userId: string,
-  roleId: string
+  UserId: string,
+  RoleId: string
 };
 
 
 export interface IAppUser {
-  id: string,
-  email: string,
-  userName: string,
-  passwordHash: string,
+  Id: string,
+  Email: string,
+  UserName: string,
+  PasswordHash: string,
   Roles : IRole[],
-  phoneNumber: string
+  PhoneNumber: string
 };

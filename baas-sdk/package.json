@@ -1,9 +1,28 @@
 {
   "name": "@mdudjak/baas-sdk",
   "description": "Angular SDK for my own BaaS system",
-  "version": "0.0.1",
+  "author": {
+    "name": "Mario Dudjak",
+    "email": "dudjakmario@hotmail.com"
+  },
+  "license": "ISC",
+  "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarioDudjak/BaaSAngularSDK"
+  },
+  "keywords": [
+    "BaaS",
+    "Angular",
+    "SDK",
+    "Angular SDK"
+  ],
+  "homepage": "https://www.npmjs.com/package/@mdudjak/baas-sdk",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
-  }
+  },
+  "files": [
+    "README.md"
+  ]
 }
